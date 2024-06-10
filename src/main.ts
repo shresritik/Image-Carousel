@@ -6,49 +6,50 @@ const dotsContainer: HTMLElement | null = document.querySelector(
 );
 const prev: HTMLElement | null = document.getElementById("prev");
 const next: HTMLElement | null = document.getElementById("next");
-const childElement = container?.children!;
+const childElement = container?.children as HTMLCollection;
+let initDot = 0;
+
 for (let i = 0; i < childElement.length; i++) {
-  childElement[i].style.position = "absolute";
-  childElement[i].style.left = `${i * 100}%`;
-  childElement[i].style.transition = "all 0.7s ease";
+  const styledElement = childElement[i] as HTMLElement;
+  styledElement.style.position = "absolute";
+  styledElement.style.left = `${i * 100}%`;
+  styledElement.style.transition = "all 0.7s ease";
 }
 
 for (let i = 0; i < childElement.length; i++) {
   const div = document.createElement("div");
   div.className = "dots";
-  dotsContainer.appendChild(div);
+  dotsContainer?.appendChild(div);
 }
-let initDot = 0;
 const buttonColor = (dotVal: number) => {
-  console.log("dotVal", dotVal);
-  dots.forEach((button: any, i: number) => {
-    console.log(i, dotVal);
+  dots.forEach((button, i: number) => {
+    let htmlButton = button as HTMLElement;
     if (i == dotVal) {
-      button.style.backgroundColor = "red";
+      htmlButton.style.backgroundColor = "red";
     } else {
-      button.style.backgroundColor = "rgb(184, 184, 184)";
+      htmlButton.style.backgroundColor = "rgb(184, 184, 184)";
     }
   });
 };
 const dots = document.querySelectorAll(".dots");
-dots.forEach((el: any, i: number) => {
+dots.forEach((el, i: number) => {
+  const element = el as HTMLElement;
   buttonColor(initDot);
 
-  el.addEventListener("click", () => dotsFunc(i));
+  element.addEventListener("click", () => dotsFunc(i));
 });
 
-const prevFunc = (e: any) => {
-  e.preventDefault();
+const prevFunc = () => {
   let i = childElement.length - 1;
   let flag = false;
-  console.log("init", initDot);
 
   while (!flag && i >= 0) {
-    const oldNext = parseInt(childElement[i].style.left.split("%")[0]);
+    const eachEl = childElement[i] as HTMLElement;
+    const oldNext = parseInt(eachEl.style.left.split("%")[0]);
     if (oldNext == 0 && i == 0) {
       for (let j = childElement.length - 1; j >= 0; j--) {
-        childElement[j].style.left =
-          -100 * (-(j + 1) + childElement.length) + "%";
+        const eachNextEL = childElement[j] as HTMLElement;
+        eachNextEL.style.left = -100 * (-(j + 1) + childElement.length) + "%";
         buttonColor(childElement.length - 1);
         if (j == 0) {
           flag = true;
@@ -59,10 +60,9 @@ const prevFunc = (e: any) => {
     } else {
       if (flag) break;
 
-      childElement[i].style.left = oldNext + 100 + "%";
+      eachEl.style.left = oldNext + 100 + "%";
     }
-    console.log("val", i, childElement[i].style.left);
-    if (childElement[i].style.left == "0%") {
+    if (eachEl.style.left == "0%") {
       initDot = i;
       buttonColor(initDot);
     }
@@ -70,15 +70,18 @@ const prevFunc = (e: any) => {
     i--;
   }
 };
-const nextFunc = (e: any) => {
-  e.preventDefault();
+const nextFunc = () => {
   let i = 0;
   let flag = false;
   while (!flag && i < childElement.length) {
-    const oldNext = parseInt(childElement[i].style.left.split("%")[0]);
+    const eachEl = childElement[i] as HTMLElement;
+
+    const oldNext = parseInt(eachEl.style.left.split("%")[0]);
     if (oldNext == 0 && i + 1 >= childElement.length) {
       for (let j = 0; j < childElement.length; j++) {
-        childElement[j].style.left = 100 * j + "%";
+        const eachNextEL = childElement[j] as HTMLElement;
+
+        eachNextEL.style.left = 100 * j + "%";
         if (j == childElement.length - 1) {
           flag = true;
           initDot = 0;
@@ -89,9 +92,9 @@ const nextFunc = (e: any) => {
     } else {
       if (flag) break;
 
-      childElement[i].style.left = oldNext - 100 + "%";
+      eachEl.style.left = oldNext - 100 + "%";
     }
-    if (childElement[i].style.left == "0%") {
+    if (eachEl.style.left == "0%") {
       initDot = i;
       buttonColor(initDot);
     }
@@ -103,11 +106,14 @@ const dotsFunc = (dotVal: number) => {
   let zeroIndex = 0;
   while (i < childElement.length) {
     if (dotVal - i >= 0) {
-      childElement[dotVal - i].style.left = -100 * i + "%";
+      const eachEl = childElement[dotVal - i] as HTMLElement;
+      eachEl.style.left = -100 * i + "%";
       if (dotVal - i == 0) zeroIndex = i;
       buttonColor(dotVal);
     } else if (i - dotVal > 0) {
-      childElement[i].style.left = 100 * (i - zeroIndex) + "%";
+      const eachChildEl = childElement[i] as HTMLElement;
+
+      eachChildEl.style.left = 100 * (i - zeroIndex) + "%";
     }
     // if (dotVal > initDot) {
     //   if (dotVal - i >= 0) {
@@ -133,5 +139,5 @@ const dotsFunc = (dotVal: number) => {
 
   // childElement[i]
 };
-prev.addEventListener("click", prevFunc);
-next.addEventListener("click", nextFunc);
+prev?.addEventListener("click", prevFunc);
+next?.addEventListener("click", nextFunc);
