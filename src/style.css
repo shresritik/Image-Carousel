@@ -12,7 +12,7 @@ body {
   border-radius: 40px;
   margin: auto;
   overflow: hidden;
-  box-shadow: -1px 1px 10px rgba(0, 0, 0, 0.5);
+  box-shadow: 6px 6px 7px rgba(0, 0, 0, 0.5);
 }
 .carousel-container {
   display: flex;
@@ -31,12 +31,12 @@ img {
   width: 15px;
   height: 15px;
   border-radius: 50%;
-  background-color: rgb(180, 180, 180);
+  background-color: rgb(184, 184, 184);
   position: relative;
   transition: all 0.2 ease;
   cursor: pointer;
 }
-.dots-container {
+.carousel__dots-container {
   position: absolute;
   display: flex;
   bottom: 150px;

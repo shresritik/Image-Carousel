@@ -1,8 +1,12 @@
-const container: any = document.querySelector(".carousel-image-wrapper");
-const dotsContainer: any = document.querySelector(".dots-container");
-const prev: any = document.getElementById("prev");
-const next: any = document.getElementById("next");
-const childElement = container.children;
+const container: HTMLSelectElement | null = document.querySelector(
+  ".carousel-image-wrapper"
+);
+const dotsContainer: HTMLElement | null = document.querySelector(
+  ".carousel__dots-container"
+);
+const prev: HTMLElement | null = document.getElementById("prev");
+const next: HTMLElement | null = document.getElementById("next");
+const childElement = container?.children!;
 for (let i = 0; i < childElement.length; i++) {
   childElement[i].style.position = "absolute";
   childElement[i].style.left = `${i * 100}%`;
@@ -22,7 +26,7 @@ const buttonColor = (dotVal: number) => {
     if (i == dotVal) {
       button.style.backgroundColor = "red";
     } else {
-      button.style.backgroundColor = "gray";
+      button.style.backgroundColor = "rgb(184, 184, 184)";
     }
   });
 };
