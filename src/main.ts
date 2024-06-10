@@ -8,7 +8,6 @@ for (let i = 0; i < childElement.length; i++) {
   childElement[i].style.position = "absolute";
   childElement[i].style.top = "0";
   childElement[i].style.left = `${i * 100}%`;
-  childElement[i].style.right = `${i * 100}%`;
   childElement[i].style.border = "2px solid red";
   childElement[i].style.transition = "all 1s ease";
 }
@@ -21,21 +20,14 @@ for (let i = 0; i < childElement.length; i++) {
   div.className = "dots";
   dotsContainer.appendChild(div);
 }
+let initDot = 0;
+
 const prevFunc = (e: any) => {
   e.preventDefault();
   let i = childElement.length - 1;
   let flag = false;
   while (!flag && i >= 0) {
     const oldNext = parseInt(childElement[i].style.left.split("%")[0]);
-
-    // if (oldNext == 0 && i + 1 >= childElement.length) {
-    //   for (let j = 0; j < childElement.length; j++) {
-    //     childElement[j].style.left = 100 * j + "%";
-    //     flag = true;
-    //     if (j == childElement.length - 1) break;
-    //   }
-    // } else {
-    // if (flag) break;
     if (oldNext == 0 && i == 0) {
       for (let j = childElement.length - 1; j >= 0; j--) {
         console.log(j, -100 * (-j + childElement.length));
@@ -53,8 +45,10 @@ const prevFunc = (e: any) => {
       if (flag) break;
 
       childElement[i].style.left = oldNext + 100 + "%";
-      i--;
     }
+    if (childElement[i].style.left == "0%") initDot = i;
+
+    i--;
     // }
   }
 };
@@ -64,8 +58,6 @@ const nextFunc = (e: any) => {
   let flag = false;
   while (!flag && i < childElement.length) {
     const oldNext = parseInt(childElement[i].style.left.split("%")[0]);
-    childElement[i].style.right = 0 + "%";
-
     if (oldNext == 0 && i + 1 >= childElement.length) {
       for (let j = 0; j < childElement.length; j++) {
         childElement[j].style.left = 100 * j + "%";
@@ -75,14 +67,40 @@ const nextFunc = (e: any) => {
     } else {
       if (flag) break;
       childElement[i].style.left = oldNext - 100 + "%";
-      i++;
     }
+    if (childElement[i].style.left == "0%") initDot = i;
+    i++;
   }
 };
-const dotsFunc = () => {};
+const dotsFunc = (dotVal: number) => {
+  let i = 0;
+  let zeroIndex = 0;
+  while (i < childElement.length) {
+    if (dotVal > initDot) {
+      // if (i == dotVal) childElement[dotVal].style.left = 0 + "%";
+      if (dotVal - i >= 0) {
+        console.log("maathi", i, dotVal);
+
+        childElement[dotVal - i].style.left = -100 * i + "%";
+        if (dotVal - i == 0) zeroIndex = i;
+        console.log(dotVal - i, childElement[dotVal - i].style.left);
+      } else if (i - dotVal > 0) {
+        console.log("tala", i, dotVal);
+        childElement[i].style.left = 100 * (i - zeroIndex) + "%";
+        console.log(i - dotVal, childElement[i].style.left);
+      }
+    } else {
+      console.log("first");
+    }
+    i++;
+  }
+  initDot = dotVal;
+
+  // childElement[i]
+};
 prev.addEventListener("click", prevFunc);
 next.addEventListener("click", nextFunc);
 const dots = document.querySelectorAll(".dots");
-dots.forEach((el: any) => {
-  el.addEventListener("click", dotsFunc);
+dots.forEach((el: any, i: number) => {
+  el.addEventListener("click", () => dotsFunc(i));
 });
