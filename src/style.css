@@ -3,7 +3,7 @@
   padding: 0;
 }
 body {
-  background-color: rgb(238, 238, 238);
+  background-color: rgb(221, 221, 221);
 }
 .carousel-image-wrapper {
   width: 60%;
@@ -62,4 +62,16 @@ img {
   position: absolute;
 
   right: 200px;
+}
+@media screen and (max-width: 600px) {
+  .carousel-image-wrapper {
+    width: 90%;
+    height: 60%;
+  }
+  #prev,
+  #next {
+    bottom: 20px;
+    width: 50px;
+    gap: 20px;
+  }
 }
