@@ -139,9 +139,3 @@ const dotsFunc = (dotVal: number) => {
 };
 prev?.addEventListener("click", prevFunc);
 next?.addEventListener("click", nextFunc);
-const timer = () => {
-  setInterval(() => {
-    nextFunc();
-  }, 5000);
-};
-window.addEventListener("load", timer);
